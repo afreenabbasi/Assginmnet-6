@@ -1,0 +1,57 @@
+
+print("Enter the number of Processess: ")
+n=input()
+processes=[]
+for i in range(int(n)):
+ processes.insert(i,i+1)
+
+print("Enter the Burst time of the processes ")
+b_time=list(map(int, input().split()))
+
+print("Enter the Priority of the processes")
+priority=list(map(int, input().split()))
+t_time=[]
+w_time=[]
+
+i=0
+j=0
+for i in range(len(priority)-1):
+ for j in range(len(priority)-i-1):
+  if(priority[j]>priority[j+1]):
+   swap=priority[j]
+   priority[j]=priority[j+1]
+   priority[j+1]=swap
+
+   swap=b_time[j]
+   b_time[j]=b_time[j+1]
+   b_time[j+1]=swap
+
+   swap=processes[j]
+   processes[j]=processes[j+1]
+   processes[j+1]=swap
+
+w_time.insert(0,0)
+t_time.insert(0,b_time[0])
+
+i=1
+for i in range(len(processes)):
+  w_time.insert(i,w_time[i-1]+b_time[i-1])
+  t_time.insert(i,w_time[i]+b_time[i])
+
+avg_tat=0
+avg_wt=0
+i=0
+for i in range(len(processes)):
+ avg_wt=avg_wt+w_time[i]
+ avg_tat=avg_tat+t_time[i]
+avg_wt=float(avg_wt)/int(n)
+avg_wt=float(avg_tat)/int(n)
+print("\n")
+print("Process\t  Burst Time\t  Waiting Time\t  Turn Around Time")
+i=0
+for i in range(int(n)):
+  print(processes[i],'\t\t',b_time[i],'\t\t',w_time[i],'\t\t',t_time[i],'\n')
+  
+print("Average Waiting time is: ",avg_wt)
+print("Average Turn Around Time is: ",avg_tat)
+ 
